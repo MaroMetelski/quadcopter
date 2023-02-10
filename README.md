@@ -1,26 +1,28 @@
-# Bare minimum Zephyr application
+# RP2040 quadcopter controller software
 
-Quickly set up bare minimum project with flat workspace and single application.
-Build from this sample for your use case. You need to know what you are doing after the setup.
-This assumes SDK and all prerequisites are met. See Zephyr's [Getting Started Guide](https://docs.zephyrproject.org/latest/develop/getting_started/index.html).
+Quadcopter controller software for RP2040 based hardware.
 
-```bash
-# get the sample
-$ git clone https://github.com/MaroMetelski/zephyr-app.git && cd zephyr-app
+## Development
 
-# [OPTIONAL] set up python virtual environment (here virtualenvwrapper is used)
-$ mkvirtualenv zephyr-app
+### RaspberryPi Pico
 
-# Initialize west workspace *below* app. This will place all modules in current directory.
-$ pip3 install west
-$ west init -l app
-$ west update
+#### Requirements
 
-# build and run qemu_x86 application
-$ pip3 install -r zephyr/scripts/requirements.txt
-$ west build -s app -b qemu_x86
-$ west build -t run
+- OpenOCD - RaspberryPi fork ([link](https://github.com/raspberrypi/openocd)),
+- [**optional**] `jtag-lock-pick_tiny_2` programming probe.
+
+#### Build
 
 ```
+west build -p -b rpi_pico -s app
+```
 
-*Now you are on your own!*
+#### Flash
+
+- Using `jtag-lock-pick_tiny_2`
+```
+openocd -f 'openocd.cfg' -c 'program path/to/file.hex verify reset exit'
+```
+
+See [Zephyr's board documentation](https://docs.zephyrproject.org/latest/boards/arm/rpi_pico/doc/index.html)
+for other ways of flashing the board.

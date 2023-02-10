@@ -12,3 +12,13 @@ manifest:
       revision: v3.2.0
       path: zephyr
       west-commands: scripts/west-commands.yml
+    - name: cmsis
+      revision: 74981bf893e8b10931464b9945e2143d99a3f0a3
+      path: modules/hal/cmsis
+      groups:
+        - hal
+    - name: hal_rpi_pico
+      path: modules/hal/rpi_pico
+      revision: a094c060e0c2d43c7f9d8f5c06cc0665117e0c18
+      groups:
+        - hal
