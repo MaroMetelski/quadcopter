@@ -9,6 +9,6 @@ manifest:
 
   projects:
     - name: zephyr
-      revision: v3.1.0
+      revision: v3.2.0
       path: zephyr
       west-commands: scripts/west-commands.yml
