@@ -1,3 +1,4 @@
 /.west*
 /zephyr*
 /build*
+/modules*
