@@ -20,3 +20,8 @@ west build -p -b nucleo_f303re -s app
 west flash
 ```
 
+#### Troubleshooting
+
+1. Flashing firmware using `west flash` fails with `Error: read_memory: failed to read memory`
+
+Hold RESET button on nucleo board while running `west flash` command. Next flash should succeed.
