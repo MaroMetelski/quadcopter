@@ -1,28 +1,27 @@
-# RP2040 quadcopter controller software
+# STM32 quadcopter controller software
 
-Quadcopter controller software for RP2040 based hardware.
+Quadcopter controller software for STM32 based hardware.
+Project in development stage.
+Currently only STM32F303RE Nucleo (NUCLEO-F303RE) development board is supported.
 
 ## Development
 
-### RaspberryPi Pico
-
-#### Requirements
-
-- OpenOCD - RaspberryPi fork ([link](https://github.com/raspberrypi/openocd)),
-- [**optional**] `jtag-lock-pick_tiny_2` programming probe.
+### STM32 Nucleo F303RE
 
 #### Build
 
 ```
-west build -p -b rpi_pico -s app
+west build -p -b nucleo_f303re -s app
 ```
 
 #### Flash
 
-- Using `jtag-lock-pick_tiny_2`
 ```
-openocd -f 'openocd.cfg' -c 'program path/to/file.hex verify reset exit'
+west flash
 ```
 
-See [Zephyr's board documentation](https://docs.zephyrproject.org/latest/boards/arm/rpi_pico/doc/index.html)
-for other ways of flashing the board.
+#### Troubleshooting
+
+1. Flashing firmware using `west flash` fails with `Error: read_memory: failed to read memory`
+
+Hold RESET button on nucleo board while running `west flash` command. Next flash should succeed.
