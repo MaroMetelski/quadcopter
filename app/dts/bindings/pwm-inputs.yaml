@@ -1,0 +1,17 @@
+description: PWM inputs parent note
+
+compatible: "pwm-inputs"
+
+child-binding:
+  description: PWM input child node
+  properties:
+    pwms:
+      required: true
+      type: phandle-array
+
+    label:
+      type: string
+      description: |
+        Human readable string describing the PWM Input. It can be used by an
+        application to identify this input or to retrieve its number/index
+        (i.e. child node number) on the parent device.
