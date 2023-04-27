@@ -16,6 +16,7 @@
   :ceedling_version: 0.31.1
   :default_tasks:
     - test:all
+  :use_preprocessor_directives: TRUE
 
 #:test_build:
 #  :use_assembly: TRUE
@@ -44,17 +45,23 @@
   :test:
     - *common_defines
     - TEST
+    - UNITY_SUPPORT_TEST_CASES
   :test_preprocess:
     - *common_defines
+    - UNITY_SUPPORT_TEST_CASES
     - TEST
+
+:unity:
+  :use_param_tests: true
 
 :cmock:
   :mock_prefix: mock_
   :when_no_prototypes: :warn
   :enforce_strict_ordering: TRUE
   :plugins:
-    - :ignore
     - :callback
+    - :ignore_arg
+    - :return_thru_ptr
   :treat_as:
     uint8:    HEX8
     uint16:   HEX16
