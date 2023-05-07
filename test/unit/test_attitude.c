@@ -1,5 +1,5 @@
 #include <unity.h>
-#include "attitude.h"
+#include <app/attitude.h>
 #include "mock_quaternion.h"
 
 void test_quaternion_to_euler_returns_all_zero_angles_when_quaternion_is_unit() {
