@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <tgmath.h>
 #include <string.h>
-#include <logging.h>
-#include "input.h"
+#include <app/logging.h>
+#include <app/input.h>
 #include "input_pwm.h"
 
 APP_LOG_MODULE_REGISTER(input, APP_LOG_LEVEL_DBG);

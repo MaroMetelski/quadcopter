@@ -1,6 +1,6 @@
 #include <math.h> /** TODO: Consider using cmsis fastmath */
-#include "attitude.h"
-#include "quaternion.h"
+#include <app/attitude.h>
+#include <app/quaternion.h>
 
 /** See: https://folk.ntnu.no/skoge/prost/proceedings/ecc-2013/data/papers/0927.pdf
   * Access 24.04.2023

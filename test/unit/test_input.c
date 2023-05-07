@@ -1,7 +1,7 @@
 #include <unity.h>
 
+#include <app/input.h>
 #include "mock_input_pwm.h"
-#include "input.h"
 
 #define TEST_CASE(...)
 #define TEST_RANGE(...)
