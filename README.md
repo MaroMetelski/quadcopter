@@ -4,41 +4,81 @@ Quadcopter controller software for STM32 based hardware.
 Project in development stage.
 Currently only STM32F303RE Nucleo (NUCLEO-F303RE) development board is supported.
 
-## Environment set up
+# Development
 
-### Application
+## Environment
 
-1. [Install Zephyr dependencies](https://docs.zephyrproject.org/latest/develop/getting_started/index.html#install-dependencies)
-2. Get the source code
-```
-git clone https://github.com/MaroMetelski/quadcopter.git
-```
-3. Install `west` and initialize Zephyr application
+> **INFO** The recommended way is to use Docker-based environment and VSCode
+devcontainers. Documentation for other set-ups may be incomplete. 
+
+### With Docker
+
+The root Dockerfile provides definition for the development image with all tools
+preinstalled.
+Simply run all the development commands from this documentation inside this 
+container, for example `docker exec <container_name> <command>`.
+
+You can either build the image yourself or use it together with VSCode as a
+devcontainer using Dev Containers plugin. This approach is described in next
+section. This is the recommended set-up.
+If you want to build and use the image yourself please do at your own discretion.
+
+#### VScode devcontainer
+
+This project includes support for VSCode Dev Container. That means you can
+simply:
+1. Install Dev Containers extension.
+2. Run VSCode command `Dev Containers: Reopen in container` (or
+`Dev Containers: Rebuild and reopen in container` if running for the first time).
+
+From now on you will be able to run all the development commands in the built-in
+terminal from VSCode.
+
+### Local (not recommended)
+
+> **TODO:** Document local environment set-up.
+
+## Task
+
+This project uses Task for running common development commands.
+
+> Task is a task runner / build tool that aims to be simpler and easier to 
+use than, for example, GNU Make.
+
+## Initialize Zephyr project 
+
+To build and run the Zephyr application you need to set up the project with `Task`, which in turn calls Zephyr's `west` build system.
+ 
 ```
 cd quadcopter
-west init -l app
-west update
+task project:init
+task project:update
 ```
 
-### Unit tests
+## Unit tests
 
-2. Install ThrowTheSwitch C unit test framework (Ceedling, Unity and CMock)
+Unit tests are run using ThrowTheSwitch framework consisting of Ceedling, Unity and CMock. Task wrappers are provided
+to simplify running tests.
 
-Follow [official instructions](http://www.throwtheswitch.org/ceedling) to install Ceedling.
-This will contain all necessary dependencies and will allow you to run test commands.
+To run all Unit Tests simply call:
+```
+task test:all
+```
 
-## Development
+## Build and run
 
 ### STM32 Nucleo F303RE
 
 #### Build
 
+Build application for STM32 Nucleo F303RE board using: 
 ```
-west build -p -b nucleo_f303re -s app
+task build:nucleo_f303re
 ```
 
 #### Flash
 
+Flash STM32 Nucleo F303RE board with:
 ```
 west flash
 ```
@@ -48,16 +88,3 @@ west flash
 1. Flashing firmware using `west flash` fails with `Error: read_memory: failed to read memory`
 
 Hold RESET button on nucleo board while running `west flash` command. Next flash should succeed.
-
-### Unit tests
-
-Unit tests are built using [Unity](https://github.com/ThrowTheSwitch/Unity) framework
-with [CMock](https://github.com/ThrowTheSwitch/CMock)
-and run using [ceedling](https://github.com/ThrowTheSwitch/Ceedling).
-
-#### Execute tests
-
-Execute unit tests placed in `tests/unit`
-```
-ceedling test:all
-```
