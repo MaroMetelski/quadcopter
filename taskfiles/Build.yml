@@ -1,7 +1,7 @@
 version: '3'
 
 vars:
-  SRC_DIR: '{{.ROOT_DIR}}/app'
+  SRC_DIR: '{{.ROOT_DIR}}/controller/app'
 
 include:
   project: './Project.yml'
@@ -16,6 +16,6 @@ tasks:
 
   nucleo_f303re:
     cmds:
-      - task: build 
+      - task: build
         vars:
           BOARD: nucleo_f303re

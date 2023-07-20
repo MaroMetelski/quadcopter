@@ -3,6 +3,4 @@ find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 project(app)
 
 add_subdirectory(src/)
-add_subdirectory(drivers/input)
-
 include_directories(include/)

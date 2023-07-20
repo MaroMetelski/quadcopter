@@ -1,6 +1,4 @@
 manifest:
-  self:
-    path: app
   defaults:
     remote: zephyrproject-rtos
   remotes:
@@ -11,14 +9,8 @@ manifest:
     - name: zephyr
       revision: e745439c40734009986bb31b3789a536174bb50c
       path: zephyr
+      import:
+        name-allowlist:
+          - cmsis
+          - hal_stm32
       west-commands: scripts/west-commands.yml
-    - name: cmsis
-      revision: 74981bf893e8b10931464b9945e2143d99a3f0a3
-      path: modules/hal/cmsis
-      groups:
-        - hal
-    - name: hal_stm32
-      path: modules/hal/stm32
-      revision: 642e199c59828137dc6b1c7044a289d4269886d1
-      groups:
-        - hal
