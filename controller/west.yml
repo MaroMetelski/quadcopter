@@ -13,4 +13,5 @@ manifest:
         name-allowlist:
           - cmsis
           - hal_stm32
+          - hal_st # for st device drivers, like lsm6dso
       west-commands: scripts/west-commands.yml
