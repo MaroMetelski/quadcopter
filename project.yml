@@ -32,9 +32,9 @@
 
 :paths:
   :test:
-    - +:test/unit/**
+    - +:controller/test/unit/**
   :source:
-    - app/**
+    - controller/app/**
   :libraries: []
 
 :defines:

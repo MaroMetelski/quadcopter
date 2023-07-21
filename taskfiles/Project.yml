@@ -1,0 +1,16 @@
+version: '3'
+
+vars:
+  MANIFEST_DIR: '{{.ROOT_DIR}}/controller'
+
+tasks:
+  init:
+    cmds:
+      - west init -l {{.MANIFEST_DIR}}
+    status:
+      - test -d {{.ROOT_DIR}}/.west
+
+  update:
+    cmds:
+      - west update
+      - west zephyr-export

@@ -1,0 +1,33 @@
+version: '3'
+
+vars:
+  CEEDLING_IMAGE_NAME: throwtheswitch/madsciencelab
+  CEEDLING_IMAGE_VERSION: 0.3.2
+  CEEDLING_IMAGE: '{{.CEEDLING_IMAGE_NAME}}:{{.CEEDLING_IMAGE_VERSION}}'
+  CEEDLING_CONTAINER: ceedling
+  CEEDLING_CMD: docker exec '{{.CEEDLING_CONTAINER}}' ceedling
+
+tasks:
+  container-create:
+    cmds:
+      - >
+        docker run -d -t 
+        --name {{.CEEDLING_CONTAINER}}
+        --mount type=bind,source={{.ROOT_DIR}},target=/project
+        {{.CEEDLING_IMAGE}}
+        /bin/sh
+    status:
+      - docker inspect {{.CEEDLING_CONTAINER}}
+
+  container-start:
+    deps: [container-create]
+    cmds:
+      - docker start {{.CEEDLING_CONTAINER}}
+
+  container:
+    deps: [container-start]
+
+  all:
+    deps: [container]
+    cmds:
+      - '{{.CEEDLING_CMD}} test:all'
