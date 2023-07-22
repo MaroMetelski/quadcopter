@@ -1,0 +1,4 @@
+{
+    // makes zephyr/ and modules/ searcheable
+    "search.useIgnoreFiles": false
+}
