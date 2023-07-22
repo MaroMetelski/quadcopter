@@ -3,8 +3,8 @@
 
 #include "input_pwm.h"
 
-BUILD_ASSERT(DT_NODE_EXISTS(DT_NODELABEL(pwm_inputs)), "No pwm_inputs device found!");
-#define DT_PWM_INPUTS DT_NODELABEL(pwm_inputs)
+BUILD_ASSERT(DT_NODE_EXISTS(DT_ALIAS(pwm_inputs)), "No pwm_inputs device found!");
+#define DT_PWM_INPUTS DT_ALIAS(pwm_inputs)
 
 static const struct device *pwm_inputs = DEVICE_DT_GET(DT_PWM_INPUTS);
 
