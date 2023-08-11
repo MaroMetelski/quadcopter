@@ -1,6 +1,7 @@
 #include <unity.h>
 #include <app/attitude.h>
 #include "mock_quaternion.h"
+#include "mock_calc.h"
 
 void test_quaternion_to_euler_returns_all_zero_angles_when_quaternion_is_unit() {
     float test_quaternion[4] = {1, 0, 0, 0};

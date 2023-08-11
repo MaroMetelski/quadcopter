@@ -1,6 +1,7 @@
 #include <math.h> /** TODO: Consider using cmsis fastmath */
 #include <app/attitude.h>
 #include <app/quaternion.h>
+#include <app/calc.h>
 
 /** See: https://folk.ntnu.no/skoge/prost/proceedings/ecc-2013/data/papers/0927.pdf
   * Access 24.04.2023
@@ -30,13 +31,17 @@ void attitude_quaternion_to_euler(float q[4], float ang[3]) {
     ang[2] = atan2f(tmp_1, tmp_2);
 };
 
-static void integrate_quaternion(float q_att[4], float q_dt[4], int dt) {
-    for (int i = 0; i < 4; i++) {
-        q_att[i] += q_dt[i] * (dt / 1000.0f);
-    }
+void attitude_euler_from_acc(float angles[3], float acc[3]) {
+    angles[0] = atan2(-1 * acc[0], sqrt(acc[1] * acc[1] + acc[2] * acc[2]));
+    angles[1] = atan2(acc[1], acc[2]);
+    angles[2] = 0;
 }
 
-void attitude_get_quaternion(float q_att[4], float ang_v[3], int dt) {
+void attitude_propagate_euler(float angles[3], float ang_v[3], float dt) {
+    calc_integrate(angles, ang_v, 3, dt);
+}
+
+void attitude_propagate_quaternion(float q_att[4], float ang_v[3], float dt) {
     float q_dt[4] = {1.0f, 0.0f, 0.0f, 0.0f};
     float q_v[4] = {0.0f, ang_v[0], ang_v[1], ang_v[2]};
 
@@ -48,6 +53,6 @@ void attitude_get_quaternion(float q_att[4], float ang_v[3], int dt) {
      * TODO: Don't run operations in-place?
      */
     quaternion_normalize(q_dt, q_dt);
-    integrate_quaternion(q_att, q_dt, dt);
+    calc_integrate(q_att, q_dt, 4, dt);
     quaternion_normalize(q_att, q_att);
 }

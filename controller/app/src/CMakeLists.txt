@@ -1,4 +1,6 @@
 target_sources(app PRIVATE
+    attitude.c
+    calc.c
     imu_zephyr.c
     input.c
     input_pwm_zephyr.c
