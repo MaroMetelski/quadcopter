@@ -1,6 +1,7 @@
 / {
     aliases {
         pwm-inputs = &pwm_inputs;
+        pwm-motors = &pwm_motors;
         imu = &lsm6dso;
     };
 
@@ -23,6 +24,22 @@
         };
         channel5: channel5 {
             pwms = < &pwm2 2 0 0 >;
+        };
+    };
+
+    pwm_motors: pwm-motors {
+        compatible = "pwm-motors";
+        motor0: motor0 {
+            pwms = < &pwm0 3 0 0 >;
+        };
+        motor1: motor1 {
+            pwms = < &pwm0 4 0 0 >;
+        };
+        motor2: motor2 {
+            pwms = < &pwm2 3 0 0 >;
+        };
+        motor4: motor4 {
+            pwms = < &pwm2 4 0 0 >;
         };
     };
 };
