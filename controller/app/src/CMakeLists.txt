@@ -10,5 +10,7 @@ target_sources(app PRIVATE
     motors_pwm_zephyr.c
     motors_shell.c
     motors.c
+    pid_cmsis.c
+    pid_inst.c
     quaternion_cmsis.c
 )
