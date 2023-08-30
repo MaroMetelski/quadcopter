@@ -1,6 +1,5 @@
 #include <stdbool.h>
 #include <stdlib.h>
-#include <tgmath.h>
 #include <string.h>
 #include <app/logging.h>
 #include <app/input.h>
