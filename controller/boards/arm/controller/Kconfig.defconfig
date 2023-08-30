@@ -1,0 +1,6 @@
+if BOARD_CONTROLLER
+
+config BOARD
+	default "controller"
+
+endif # BOARD_CONTROLLER

@@ -1,0 +1,15 @@
+identifier: controller
+name: Flight controller F3 V1
+type: mcu
+arch: arm
+toolchain:
+  - zephyr
+  - gnuarmemb
+  - xtools
+ram: 80
+flash: 512
+supported:
+  - gpio
+  - counter
+  - i2c
+  - spi

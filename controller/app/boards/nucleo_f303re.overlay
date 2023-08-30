@@ -1,4 +1,9 @@
 / {
+    aliases {
+        pwm-inputs = &pwm_inputs;
+        imu = &mpu6050;
+    };
+
     pwm_inputs: pwm-inputs {
         compatible = "pwm-inputs";
         channel0: channel0 {
@@ -23,7 +28,7 @@
 };
 
 &i2c1 {
-    imu: mpu6050@68 {
+    mpu6050: mpu6050@68 {
         status = "okay";
         compatible = "invensense,mpu6050";
         reg = < 0x68 >;

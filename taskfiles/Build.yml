@@ -19,3 +19,9 @@ tasks:
       - task: build
         vars:
           BOARD: nucleo_f303re
+
+  controller:
+    cmds:
+      - task: build
+        vars:
+          BOARD: controller

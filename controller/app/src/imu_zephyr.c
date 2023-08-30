@@ -6,8 +6,8 @@
 
 LOG_MODULE_REGISTER(imu_sensor, CONFIG_SENSOR_LOG_LEVEL);
 
-BUILD_ASSERT(DT_NODE_EXISTS(DT_NODELABEL(imu)), "No IMU device found under 'imu' alias!");
-#define DT_IMU DT_NODELABEL(imu)
+BUILD_ASSERT(DT_NODE_EXISTS(DT_ALIAS(imu)), "No IMU device found under 'imu' alias!");
+#define DT_IMU DT_ALIAS(imu)
 
 static const struct device *imu = DEVICE_DT_GET(DT_IMU);
 
