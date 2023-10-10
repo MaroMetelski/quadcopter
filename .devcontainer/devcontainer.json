@@ -14,7 +14,7 @@
 				"terminal.integrated.defaultProfile.linux": "zsh"
 			},
 			"extensions": [
-				"ms-vscode.cpptools-extension-pack"
+				"ms-vscode.cpptools"
 			]
 		}
 	},
