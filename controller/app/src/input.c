@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <app/logging.h>
-#include <app/input.h>
-#include "input_pwm.h"
+#include <controller/input.h>
+#include <controller/low_level/input_pwm.h>
 
 APP_LOG_MODULE_REGISTER(input, APP_LOG_LEVEL_DBG);
 

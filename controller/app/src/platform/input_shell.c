@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <zephyr/shell/shell.h>
-#include <app/input.h>
+#include <controller/input.h>
 
 static int cmd_input_calibrate_max(
     const struct shell *sh, size_t argc, char **argv)

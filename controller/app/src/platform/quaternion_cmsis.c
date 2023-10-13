@@ -1,5 +1,5 @@
 #include <arm_math.h>
-#include <app/quaternion.h>
+#include <controller/quaternion.h>
 
 void quaternion_product(float *qa, float *qb, float *out) {
     return arm_quaternion_product_single_f32(qa, qb, out);
