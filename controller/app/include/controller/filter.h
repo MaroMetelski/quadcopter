@@ -1,5 +1,5 @@
 #ifndef __APP_FILTER_H__
-#define _APP_FILTER_H__
+#define __APP_FILTER_H__
 
 #include <stddef.h>
 

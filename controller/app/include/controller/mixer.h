@@ -2,7 +2,7 @@
 #define __MIXER_H__
 
 #include <stdint.h>
-#include <app/motors.h>
+#include <controller/motors.h>
 
 /**
 * Motor mixer structure. This structure serves two purposes:

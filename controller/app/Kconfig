@@ -2,6 +2,75 @@ menu "Zephyr"
 source "Kconfig.zephyr"
 endmenu
 
+menu "Application"
+
 module = APP
 module-str = APP
 source "subsys/logging/Kconfig.template.log_config"
+
+menuconfig APP_MOTORS
+    bool "Motors API"
+    default y
+    help
+      Generic motor control API.
+      Implemented over PWM API but may support different
+      backends in the future.
+
+if APP_MOTORS
+
+    config APP_MOTORS_PWM_ZEPHYR
+        bool "Zephyr-based PWM motors implementation"
+        default y
+        depends on PWM_MOTORS_DRV
+        help
+        Use Zephyr drivers for controlling PWM motors.
+
+    config APP_MOTORS_PWM
+        bool "Motors PWM low level API"
+        default y
+        depends on APP_MOTORS_PWM_ZEPHYR
+
+endif
+
+menuconfig APP_INPUT
+    bool "Input API"
+    default y
+    help
+        Generic remote controller input API.
+        The only supported backend is INPUT_PWM API now.
+
+if APP_INPUT
+
+config APP_INPUT_PWM_ZEPHYR
+    bool "Zephyr based PWM inputs implementation"
+    default y
+    depends on PWM_INPUTS_DRV
+    help
+        Use Zephyr drivers for controlling PWM inputs.
+
+config APP_INPUT_PWM
+    bool "Inputs PWM low level API"
+    default y
+    depends on APP_INPUT_PWM_ZEPHYR
+
+endif
+
+menuconfig APP_IMU
+    bool "IMU API"
+    default y
+    help
+        IMU (Inertial Measurement Unit) API. Right now the only supported
+        implementation uses Zephyr Sensor API.
+
+if APP_IMU
+
+config APP_IMU_ZEPHYR
+    bool "Zephyr-based IMU API"
+    default y
+    depends on SENSOR
+    help
+        Use Zephyr sensor API for IMU data
+
+endif
+
+endmenu

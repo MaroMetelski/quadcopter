@@ -1,7 +1,7 @@
-#include <app/motors.h>
+#include <controller/motors.h>
 #include <app/logging.h>
 #include <string.h>
-#include "motors_pwm.h"
+#include <controller/low_level/motors_pwm.h>
 
 APP_LOG_MODULE_REGISTER(motors, APP_LOG_LEVEL_DBG);
 
@@ -39,7 +39,7 @@ enum motor motor_from_string(char *str) {
 }
 
 static uint32_t throttle_to_duty(enum motor motor, uint32_t throttle) {
-    struct motor_data *current_motor = &motors[motor]; 
+    struct motor_data *current_motor = &motors[motor];
     uint32_t max_throttle = current_motor->config.max_throttle;
     uint32_t max_duty = MOTOR_PWM_PERIOD_NSEC;
     if (max_throttle > max_duty) {

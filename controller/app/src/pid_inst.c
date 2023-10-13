@@ -1,6 +1,6 @@
-#include <app/pid.h>
-#include <app/pid_inst.h>
-#include <app/axis.h>
+#include <controller/pid.h>
+#include <controller/pid_inst.h>
+#include <controller/axis.h>
 
 struct pid pid_inst[AXIS_NUM];
 

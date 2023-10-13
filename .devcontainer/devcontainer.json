@@ -12,7 +12,10 @@
 		"vscode": {
 			"settings": {
 				"terminal.integrated.defaultProfile.linux": "zsh"
-			}
+			},
+			"extensions": [
+				"ms-vscode.cpptools"
+			]
 		}
 	},
 	"features": {
@@ -29,7 +32,7 @@
 				"upgradePackages": false
 		}
 	},
-	
+
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
@@ -40,5 +43,6 @@
 	// "customizations": {},
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	"remoteUser": "user"
+	"remoteUser": "user",
+	"runArgs": ["--privileged"]
 }

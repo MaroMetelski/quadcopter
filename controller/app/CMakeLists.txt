@@ -3,4 +3,5 @@ find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 project(app)
 
 add_subdirectory(src/)
+add_subdirectory(src/platform/)
 include_directories(include/)

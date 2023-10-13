@@ -1,7 +1,6 @@
 #include <zephyr/device.h>
 #include <drivers/pwm_inputs.h>
-
-#include "input_pwm.h"
+#include <controller/low_level/input_pwm.h>
 
 BUILD_ASSERT(DT_NODE_EXISTS(DT_ALIAS(pwm_inputs)), "No pwm_inputs device found!");
 #define DT_PWM_INPUTS DT_ALIAS(pwm_inputs)

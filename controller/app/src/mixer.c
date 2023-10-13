@@ -1,4 +1,4 @@
-#include <app/mixer.h>
+#include <controller/mixer.h>
 #include <string.h>
 
 static const struct mixer mixer_quad_x_default[MOTOR_LAST] = {

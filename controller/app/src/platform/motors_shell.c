@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <zephyr/shell/shell.h>
-#include <app/motors.h>
+#include <controller/motors.h>
 
 static int cmd_motor_configure(
     const struct shell *sh, size_t argc, char **argv)
