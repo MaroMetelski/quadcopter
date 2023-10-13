@@ -8,7 +8,7 @@ include:
 
 tasks:
   build:
-    deps: 
+    deps:
       - task: :project:update
     internal: true
     cmds:
@@ -25,3 +25,9 @@ tasks:
       - task: build
         vars:
           BOARD: controller
+
+  native:
+    cmds:
+      - task: build
+        vars:
+          BOARD: native_posix
