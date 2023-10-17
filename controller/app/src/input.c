@@ -58,6 +58,34 @@ bool input_configure_channel(enum input_channel ch, struct input_channel_config 
     return true;
 }
 
+bool input_get_calibration(
+    enum input_channel ch, struct input_channel_pwm_calib *calib)
+{
+    if (!is_channel_calibrated(ch) || !is_channel_valid(ch)) {
+        APP_LOG_ERR("Invalid channel or channel not calibrated")
+        return false;
+    }
+    *calib = channels[ch].calib;
+    return true;
+}
+
+bool input_set_calibration(
+    enum input_channel ch, struct input_channel_pwm_calib *calib)
+{
+    if (!is_channel_configured(ch) || !is_channel_valid(ch)) {
+        APP_LOG_ERR("Invalid channel or channel not configured");
+        return false;
+    }
+    if (!calib) {
+        return false;
+    }
+    channels[ch].calib = *calib;
+    channels[ch].calibrated_max = true;
+    channels[ch].calibrated_min = true;
+    return true;
+}
+
+
 bool input_calibrate_channel_max(enum input_channel ch) {
     if (!is_channel_configured(ch) || !is_channel_valid(ch)) {
         APP_LOG_ERR("Invalid channel or channel not configured");

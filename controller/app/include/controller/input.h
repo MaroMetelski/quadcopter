@@ -25,8 +25,22 @@ struct input_channel_config {
 
 enum input_channel input_channel_from_string(char *str);
 bool input_configure_channel(enum input_channel ch, struct input_channel_config *cfg);
+
 bool input_calibrate_channel_max(enum input_channel ch);
 bool input_calibrate_channel_min(enum input_channel ch);
+
+/** Get calibration data for channel. */
+bool input_get_calibration(
+    enum input_channel ch, struct input_channel_pwm_calib *calib);
+
+/** Set calibration data for a channel.
+ *
+ * This can be used to set calibration data manually, e.g. when loading
+ * calibration data from storage.
+*/
+bool input_set_calibration(
+    enum input_channel ch, struct input_channel_pwm_calib *calib);
+
 float input_get_channel_value(enum input_channel ch);
 
 #endif  // __INPUT_H__
