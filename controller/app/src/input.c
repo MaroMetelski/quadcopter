@@ -58,34 +58,29 @@ bool input_configure_channel(enum input_channel ch, struct input_channel_config 
     return true;
 }
 
-bool input_calibrate_channel_max(enum input_channel ch) {
-    if (!is_channel_configured(ch) || !is_channel_valid(ch)) {
-        APP_LOG_ERR("Invalid channel or channel not configured");
+bool input_get_calibration(
+    enum input_channel ch, struct input_channel_pwm_calib *calib)
+{
+    if (!is_channel_calibrated(ch) || !is_channel_valid(ch)) {
+        APP_LOG_ERR("Invalid channel or channel not calibrated");
         return false;
     }
-    uint64_t data;
-    int ret = input_pwm_get_channel_duty_usec(&data, channels[ch].config.channel);
-    if (ret < 0) {
-        return false;
-    }
-    channels[ch].calib.max_dc = (uint32_t)data;
-    APP_LOG_DBG("calibration max duty cycle %d", channels[ch].calib.max_dc);
-    channels[ch].calibrated_max = true;
+    *calib = channels[ch].calib;
     return true;
 }
 
-bool input_calibrate_channel_min(enum input_channel ch) {
+bool input_set_calibration(
+    enum input_channel ch, struct input_channel_pwm_calib *calib)
+{
     if (!is_channel_configured(ch) || !is_channel_valid(ch)) {
         APP_LOG_ERR("Invalid channel or channel not configured");
         return false;
     }
-    uint64_t data;
-    int ret = input_pwm_get_channel_duty_usec(&data, channels[ch].config.channel);
-    if (ret < 0) {
+    if (!calib) {
         return false;
     }
-    channels[ch].calib.min_dc = (uint32_t)data;
-    APP_LOG_DBG("calibration max duty cycle %d", channels[ch].calib.min_dc);
+    channels[ch].calib = *calib;
+    channels[ch].calibrated_max = true;
     channels[ch].calibrated_min = true;
     return true;
 }
@@ -110,6 +105,21 @@ static float input_convert(enum input_channel ch, uint32_t raw_dc) {
         value = value < max_value ? max_value : value;
     }
     return value;
+}
+
+uint32_t input_get_channel_raw_value(enum input_channel ch)
+{
+    if (!is_channel_configured(ch) || !is_channel_valid(ch)) {
+        APP_LOG_ERR("Invalid channel or channel not configured");
+        return false;
+    }
+    uint64_t data;
+    int ret = input_pwm_get_channel_duty_usec(&data, channels[ch].config.channel);
+    if (ret < 0) {
+        return 0;
+    }
+    APP_LOG_DBG("channel raw duty cycle: %d", (uint32_t)data);
+    return (uint32_t)data;
 }
 
 float input_get_channel_value(enum input_channel ch) {

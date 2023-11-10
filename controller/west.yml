@@ -7,7 +7,7 @@ manifest:
 
   projects:
     - name: zephyr
-      revision: e745439c40734009986bb31b3789a536174bb50c
+      revision: d55b0a410d98f10e84ac338888413ef240022ec1
       path: zephyr
       import:
         name-allowlist:
