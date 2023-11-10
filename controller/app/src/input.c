@@ -62,7 +62,7 @@ bool input_get_calibration(
     enum input_channel ch, struct input_channel_pwm_calib *calib)
 {
     if (!is_channel_calibrated(ch) || !is_channel_valid(ch)) {
-        APP_LOG_ERR("Invalid channel or channel not calibrated")
+        APP_LOG_ERR("Invalid channel or channel not calibrated");
         return false;
     }
     *calib = channels[ch].calib;
