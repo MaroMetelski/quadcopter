@@ -52,10 +52,12 @@
 };
 
 &lsm6dso {
-    accel-range = < 1 >;
-    accel-odr = < 10 >;
+    accel-range = < 2 >;
+    /* LPF1 cutoff frequency 208 / 2 Hz. */
+    accel-odr = < 5 >;
     gyro-range = < 2 >;
-    gyro-odr = < 10 >;
+    /* LPF2 cutoff frequency 208 / 2 Hz. */
+    gyro-odr = < 5 >;
 };
 
 sbus_uart: &usart3 {
