@@ -3,6 +3,7 @@
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
+#define IS_BETWEEN(x, a, b) ((x > a && x < b))
 
 void calc_integrate(float *value, float *d, float n_terms, float dt);
 
