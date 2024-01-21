@@ -1,6 +1,6 @@
 #include <unity.h>
 
-#include <app/input.h>
+#include <controller/input.h>
 #include "mock_input_pwm.h"
 
 #define TEST_CASE(...)

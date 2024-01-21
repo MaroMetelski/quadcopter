@@ -1,5 +1,5 @@
 #include <unity.h>
-#include <app/mixer.h>
+#include <controller/mixer.h>
 
 static struct mixer test_mixer[MOTOR_LAST] = {
     {1.0, 1.0, 1.0, 1.0},

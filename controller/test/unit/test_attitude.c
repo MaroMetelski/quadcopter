@@ -1,5 +1,5 @@
 #include <unity.h>
-#include <app/attitude.h>
+#include <controller/attitude.h>
 #include "mock_quaternion.h"
 #include "mock_calc.h"
 
