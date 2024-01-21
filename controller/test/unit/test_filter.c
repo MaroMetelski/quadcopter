@@ -1,5 +1,5 @@
 #include <unity.h>
-#include <app/filter.h>
+#include <controller/filter.h>
 
 typedef struct {
     float input1;

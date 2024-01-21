@@ -16,6 +16,41 @@ struct pwm_inputs_config {
     const struct pwm_dt_spec *inputs;
 };
 
+/* TODO: Implement PWM API in this driver instead of wrapping syscalls. */
+int pwm_inputs_configure_capture(const struct device *dev, uint8_t channel, pwm_flags_t flags,
+    pwm_capture_callback_handler_t cb, void *user_data)
+{
+    const struct pwm_inputs_config *cfg = dev->config;
+    if (channel > cfg->num_inputs) {
+        return -EINVAL;
+    }
+    const struct pwm_dt_spec *pwm_input = &cfg->inputs[channel];
+    return pwm_configure_capture(pwm_input->dev, pwm_input->channel, flags, cb, user_data);
+}
+
+/* TODO: Implement PWM API in this driver instead of wrapping syscalls. */
+int pwm_inputs_enable_capture(const struct device *dev, uint8_t channel)
+{
+    const struct pwm_inputs_config *cfg = dev->config;
+    if (channel > cfg->num_inputs) {
+        return -EINVAL;
+    }
+    const struct pwm_dt_spec *pwm_input = &cfg->inputs[channel];
+    return pwm_enable_capture(pwm_input->dev, pwm_input->channel);
+}
+
+/* TODO: Implement PWM API in this driver instead of wrapping syscalls. */
+int pwm_inputs_disable_capture(const struct device *dev, uint8_t channel)
+{
+    const struct pwm_inputs_config *cfg = dev->config;
+    if (channel > cfg->num_inputs) {
+        return -EINVAL;
+    }
+    const struct pwm_dt_spec *pwm_input = &cfg->inputs[channel];
+    return pwm_disable_capture(pwm_input->dev, pwm_input->channel);
+}
+
+/* TODO: Implement PWM API in this driver instead of wrapping syscalls. */
 int pwm_inputs_get_channel_duty_usec(
     const struct device *dev, uint64_t *data, uint8_t channel)
 {
