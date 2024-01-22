@@ -8,6 +8,7 @@
         pwm-inputs = &pwm_inputs;
         pwm-motors = &pwm_motors;
         imu = &lsm6dso;
+        sbus = &sbus_uart;
     };
 
     pwm_inputs: pwm-inputs {
@@ -30,6 +31,7 @@
         channel5: channel5 {
             pwms = < &pwm2 2 0 0 >;
         };
+
     };
 
     pwm_motors: pwm-motors {
@@ -54,6 +56,12 @@
     accel-odr = < 10 >;
     gyro-range = < 2 >;
     gyro-odr = < 10 >;
+};
+
+sbus_uart: &usart3 {
+    data-bits = < 8 >;
+    parity = "even";
+    stop-bits = "2";
 };
 
 &flash0 {

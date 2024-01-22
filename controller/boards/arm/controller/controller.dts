@@ -54,6 +54,14 @@
     status = "okay";
 };
 
+&usart3 {
+    /* TX not used, not connected. PC11 is used for SBus (requires PCB modification) */
+    pinctrl-0 = <&usart3_rx_pc11 &usart3_tx_pb10>;
+    pinctrl-names = "default";
+    current-speed = <100000>;
+    status = "okay";
+};
+
 &spi1 {
     status = "okay";
     pinctrl-0 = <&spi1_sck_pa5 &spi1_miso_pa6 &spi1_mosi_pa7>;
@@ -74,7 +82,7 @@
     pinctrl-0 = <&i2c1_sda_pb7 &i2c1_scl_pb8>;
     pinctrl-names = "default";
     clock-frequency = <I2C_BITRATE_FAST>;
-    
+
     bq27441: bq27441-g1a@55 {
         status = "okay";
         compatible = "ti,bq274xx";
@@ -102,7 +110,7 @@
 &timers2 {
     status = "okay";
     st,prescaler = <100>;
-    
+
     pwm1: pwm-1 {
         compatible = "st,stm32-pwm";
 		#pwm-cells = <3>;
