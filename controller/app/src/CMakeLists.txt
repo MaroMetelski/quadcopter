@@ -7,6 +7,7 @@ target_sources(app PRIVATE
     main.c
     mixer.c
     pid_inst.c
+    sbus_decoder.c
 )
 
 target_sources_ifdef(CONFIG_APP_MOTORS app PRIVATE motors.c)

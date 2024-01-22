@@ -36,8 +36,8 @@ menuconfig APP_INPUT
     bool "Input API"
     default y
     help
-        Generic remote controller input API.
-        The only supported backend is INPUT_PWM API now.
+        Generic remote controller input API. Supported backends include standard
+        PWM and SBus UART.
 
 if APP_INPUT
 
@@ -45,13 +45,41 @@ config APP_INPUT_PWM_ZEPHYR
     bool "Zephyr based PWM inputs implementation"
     default y
     depends on PWM_INPUTS_DRV
+    select APP_INPUT_PWM_HAS_DRIVER
     help
         Use Zephyr drivers for controlling PWM inputs.
 
 config APP_INPUT_PWM
     bool "Inputs PWM low level API"
     default y
-    depends on APP_INPUT_PWM_ZEPHYR
+    select APP_INPUT_PWM_ZEPHYR
+
+config APP_INPUT_PWM_HAS_DRIVER
+    bool
+
+config APP_INPUT_SBUS_ZEPHYR
+    bool "Zephyr based implementation of SBus UART"
+    default n
+    select APP_INPUT_SBUS_HAS_DRIVER
+    help
+      Use Zephyr UART drivers for Sbus UART.
+
+config APP_INPUT_SBUS
+    bool "Inputs SBus low level API"
+    default y
+    depends on UART_INTERRUPT_DRIVEN
+    select APP_INPUT_SBUS_ZEPHYR
+
+if APP_INPUT_SBUS
+
+module = APP_INPUT_SBUS
+module-str = Input SBus API
+source "subsys/logging/Kconfig.template.log_config"
+
+endif # APP_INPUT_SBUS
+
+config APP_INPUT_SBUS_HAS_DRIVER
+    bool
 
 endif
 
