@@ -11,7 +11,7 @@ tasks:
   container-create:
     cmds:
       - >
-        docker run -d -t 
+        docker run -d -t
         --name {{.CEEDLING_CONTAINER}}
         --mount type=bind,source={{.ROOT_DIR}},target=/project
         {{.CEEDLING_IMAGE}}
@@ -31,3 +31,8 @@ tasks:
     deps: [container]
     cmds:
       - '{{.CEEDLING_CMD}} test:all'
+
+  m:
+    deps: [container]
+    cmds:
+      - '{{.CEEDLING_CMD}} test:test_{{.MODULE}}.c'
