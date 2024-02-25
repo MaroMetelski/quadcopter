@@ -2,6 +2,7 @@
 #include <zephyr/drivers/uart.h>
 #include <zephyr/logging/log.h>
 #include <controller/low_level/input_sbus.h>
+#include <controller/sbus_decoder.h>
 #include <zephyr/kernel.h>
 
 LOG_MODULE_REGISTER(sbus_uart, CONFIG_APP_INPUT_SBUS_LOG_LEVEL);
@@ -9,8 +10,6 @@ LOG_MODULE_REGISTER(sbus_uart, CONFIG_APP_INPUT_SBUS_LOG_LEVEL);
 BUILD_ASSERT(DT_NODE_EXISTS(DT_ALIAS(sbus)), "No sbus device found!");
 #define SBUS_UART_NODE   DT_ALIAS(sbus)
 
-/* SBus frame size with header and footer. */
-#define SBUS_FRAME_SIZE 25
 /* Amount of SBus bytes to read after header has been captured. */
 #define SBUS_BYTES_TO_READ (SBUS_FRAME_SIZE - 1)
 
@@ -26,6 +25,8 @@ static enum {
 
 static struct {
     uint8_t buf[SBUS_FRAME_SIZE];
+    /** Channels data as understood by input layer. */
+    uint16_t ch_buf[SBUS_TOT_CHANNELS];
     uint8_t size;
 } rx;
 
@@ -69,8 +70,16 @@ void sbus_uart_cb(const struct device *dev, void *user_data) {
         /* Validate only the actual data bytes. */
         rx.size--;
         LOG_HEXDUMP_DBG(rx.buf, rx.size, "sbus data");
-        if (frame_cb) {
-            frame_cb(rx.buf, rx.size);
+
+        struct sbus_frame frame = {0};
+        int rc = sbus_decode_frame(rx.buf, rx.size, true, true, &frame);
+        if (rc == 0 && frame_cb) {
+            /* copy first 16 data channels. */
+            (void) memcpy(rx.ch_buf, frame.channels, sizeof(frame.channels));
+            /* set binary channels data. */
+            rx.ch_buf[16] = (uint16_t)frame.ch17;
+            rx.ch_buf[17] = (uint16_t)frame.ch18;
+            frame_cb(rx.ch_buf, sizeof(rx.ch_buf) / sizeof(rx.ch_buf[0]));
         }
     }
 }

@@ -3,7 +3,8 @@
 #include <string.h>
 #include <app/logging.h>
 #include <controller/input.h>
-#include <controller/low_level/input_pwm.h>
+#include <controller/low_level/input_ll.h>
+#include <controller/low_level/input_sbus.h>
 
 APP_LOG_MODULE_REGISTER(input, APP_LOG_LEVEL_DBG);
 
@@ -13,7 +14,16 @@ struct input_channel_data {
     bool configured;
     bool calibrated_min;
     bool calibrated_max;
+    uint16_t raw_val;
 };
+
+#ifdef CONFIG_APP_INPUT_SBUS_ZEPHYR
+struct input_ll_api input_ll  = {
+    .set_frame_callback = input_sbus_set_frame_callback,
+    .start = input_sbus_start,
+    .stop = input_sbus_stop,
+};
+#endif
 
 static struct input_channel_data channels[CHANNEL_FUNC_LAST];
 
@@ -46,6 +56,21 @@ static bool is_channel_configured(enum input_channel ch) {
 
 static bool is_channel_calibrated(enum input_channel ch) {
     return channels[ch].calibrated_min && channels[ch].calibrated_max;
+}
+
+static void input_ll_callback(uint16_t *data, uint8_t size) {
+    for (int i = 0; i < CHANNEL_FUNC_LAST; i++) {
+        if (!is_channel_configured(i)) {
+            continue;
+        }
+        channels[i].raw_val = 0;
+        uint8_t internal_channel_num = channels[i].config.channel;
+        /* This channel is not available in incoming data. */
+        if (internal_channel_num >= size) {
+            continue;
+        }
+        channels[i].raw_val = data[internal_channel_num];
+    }
 }
 
 bool input_configure_channel(enum input_channel ch, struct input_channel_config *cfg) {
@@ -113,11 +138,7 @@ uint32_t input_get_channel_raw_value(enum input_channel ch)
         APP_LOG_ERR("Invalid channel or channel not configured");
         return false;
     }
-    uint64_t data;
-    int ret = input_pwm_get_channel_duty_usec(&data, channels[ch].config.channel);
-    if (ret < 0) {
-        return 0;
-    }
+    uint16_t data = channels[ch].raw_val;
     APP_LOG_DBG("channel raw duty cycle: %d", (uint32_t)data);
     return (uint32_t)data;
 }
@@ -127,10 +148,27 @@ float input_get_channel_value(enum input_channel ch) {
         APP_LOG_ERR("Invalid channel or channel not calibrated");
         return 0;
     }
-    uint64_t data;
-    int ret = input_pwm_get_channel_duty_usec(&data, channels[ch].config.channel);
-    if (ret < 0) {
-        return 0;
-    }
+    uint16_t data = channels[ch].raw_val;
     return input_convert(ch, (uint32_t)data);
+}
+
+bool input_init(void) {
+    if (0 != input_ll.set_frame_callback(input_ll_callback)) {
+        return false;
+    }
+    return true;
+}
+
+bool input_start(void) {
+    if (0 != input_ll.start()) {
+        return false;
+    }
+    return true;
+}
+
+bool input_stop(void) {
+    if (0 != input_ll.stop()) {
+        return false;
+    }
+    return true;
 }
