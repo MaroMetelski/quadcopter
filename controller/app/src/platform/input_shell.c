@@ -51,7 +51,22 @@ static int cmd_input_read(const struct shell *sh, size_t argc, char **argv)
     return 0;
 }
 
+static int cmd_start(const struct shell *sh, size_t argc, char **argv)
+{
+    input_init();
+    input_start();
+    return 0;
+}
+
+static int cmd_stop(const struct shell *sh, size_t argc, char **argv)
+{
+    input_stop();
+    return 0;
+}
+
 SHELL_STATIC_SUBCMD_SET_CREATE(input_sub_cmds,
+    SHELL_CMD(start, NULL, "start", cmd_start),
+    SHELL_CMD(stop, NULL, "stop", cmd_stop),
     SHELL_CMD_ARG(configure, NULL, "configure <channel> <pwm_ch> <value_min> <value_max>", cmd_input_configure, 5, 0),
     SHELL_CMD_ARG(read, NULL, "read <channel>", cmd_input_read, 2, 0),
     SHELL_CMD_ARG(read_raw, NULL, "read_raw <channel>", cmd_input_read_raw, 2, 0),

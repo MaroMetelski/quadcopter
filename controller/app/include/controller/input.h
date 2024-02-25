@@ -41,4 +41,11 @@ bool input_set_calibration(
 
 float input_get_channel_value(enum input_channel ch);
 
+/** Initialize input system. */
+bool input_init(void);
+/** Start receiving input data. */
+bool input_start(void);
+/** Stop receiving input data. */
+bool input_stop(void);
+
 #endif  // __INPUT_H__

@@ -5,14 +5,17 @@
 #include <stdbool.h>
 
 /** Number of regular SBus channels (excluding binary channel 16 and 17). */
-#define SBUS_CHANNELS   16
-#define SBUS_FRAME_SIZE 25
-#define SBUS_HEADER     0x0F
-#define SBUS_FOOTER     0x00
+#define SBUS_DATA_CHANNELS 16
+/** Total number of SBus channels (including binary channels). */
+#define SBUS_TOT_CHANNELS  SBUS_DATA_CHANNELS + 2
+#define SBUS_FRAME_SIZE    25
+
+#define SBUS_HEADER       0x0F
+#define SBUS_FOOTER       0x00
 
 /** SBus frame data structure. */
 struct sbus_frame {
-    uint16_t channels[SBUS_CHANNELS];
+    uint16_t channels[SBUS_DATA_CHANNELS];
     bool ch17;
     bool ch18;
     bool frame_lost;
