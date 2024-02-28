@@ -4,27 +4,33 @@
 static const struct mixer mixer_quad_x_default[MOTOR_LAST] = {
     [MOTOR_FRONT_LEFT] = {
         .throttle = 1.0,
-        .pitch = 1.0,
-        .roll = -1.0,
-        .yaw = -1.0,
+        .pitch = -1.0,
+        .roll = 1.0,
+        .yaw = 1.0,
     },
     [MOTOR_FRONT_RIGHT] = {
         .throttle = 1.0,
         .pitch = 1.0,
         .roll = 1.0,
-        .yaw = 1.0,
+        .yaw = -1.0,
     },
     [MOTOR_BACK_LEFT] = {
         .throttle = 1.0,
         .pitch = -1.0,
         .roll = -1.0,
-        .yaw = -1.0,
+        .yaw = 1.0,
+    },
+    [MOTOR_BACK_LEFT] = {
+        .throttle = 1.0,
+        .pitch = 1.0,
+        .roll = 1.0,
+        .yaw = 1.0,
     },
     [MOTOR_BACK_RIGHT] = {
         .throttle = 1.0,
-        .pitch = -1.0,
-        .roll = 1.0,
-        .yaw = 1.0,
+        .pitch = 1.0,
+        .roll = -1.0,
+        .yaw = -1.0,
     },
 };
 
