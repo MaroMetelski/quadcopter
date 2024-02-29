@@ -127,14 +127,18 @@ int main(void)
             float roll = input_get_channel_value(CHANNEL_ROLL);
             float yaw = input_get_channel_value(CHANNEL_YAW);
 
+            /* Reduce sensitivity in the middle position. This should be handled by input
+             * system. A middle value could be calculated between min-max and a configuration
+             * setting could be used to determine the "safe zone". */
+            pitch = IS_BETWEEN(pitch, -1, 1) ? 0 : pitch;
+            roll = IS_BETWEEN(roll, -1, 1) ? 0 : roll;
+            yaw = IS_BETWEEN(yaw, -1, 1) ? 0 : yaw;
+
             /* Calculate errors. */
             float pitch_error = pitch - attitude_from_gyro_deg[0];
             float roll_error = roll - attitude_from_gyro_deg[1];
+            /** Just use input to spin when input is present. */
             float yaw_error = yaw - attitude_from_gyro_deg[2];
-
-            pitch_error = pitch_error < 1 || pitch_error > -1  ? pitch_error : 0;
-            roll_error = roll_error < 1 || roll_error > -1 ? roll_error : 0;
-            yaw_error = yaw_error < 1 || yaw_error > -1 ? yaw_error : 0;
 
             /* Process PIDs. */
             float pitch_pid = pid_inst_process(AXIS_PITCH, pitch_error);
