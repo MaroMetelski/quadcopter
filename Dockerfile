@@ -1,6 +1,6 @@
 FROM zephyrprojectrtos/zephyr-build:v0.26.4
 
-ARG GO_VERSION=1.20.4
+ARG GO_VERSION=1.22.0
 ARG ZSDK_VERSION=0.16.1
 
 # Download and install Go
@@ -20,9 +20,9 @@ USER root
 
 # Install development system packages
 
-# FIXME: 
+# FIXME:
 # "The repository 'http://apt.llvm.org/jammy jammy Release' does not have a Release file"
-RUN add-apt-repository -r \ 
+RUN add-apt-repository -r \
     http://apt.llvm.org/jammy llvm-toolchain-jammy-16 Release
 
 RUN apt-get -y update && \
