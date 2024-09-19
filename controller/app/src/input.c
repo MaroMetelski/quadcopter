@@ -8,6 +8,8 @@
 
 APP_LOG_MODULE_REGISTER(input, APP_LOG_LEVEL_DBG);
 
+bool started = false;
+
 struct input_channel_data {
     struct input_channel_config config;
     struct input_channel_pwm_calib calib;
@@ -134,9 +136,9 @@ static float input_convert(enum input_channel ch, uint32_t raw_dc) {
 
 uint32_t input_get_channel_raw_value(enum input_channel ch)
 {
-    if (!is_channel_configured(ch) || !is_channel_valid(ch)) {
-        APP_LOG_ERR("Invalid channel or channel not configured");
-        return false;
+    if (!is_channel_configured(ch) || !is_channel_valid(ch) || !started) {
+        APP_LOG_ERR("Invalid channel, channel not configured or system not started");
+        return 0;
     }
     uint16_t data = channels[ch].raw_val;
     APP_LOG_DBG("channel raw duty cycle: %d", (uint32_t)data);
@@ -144,9 +146,10 @@ uint32_t input_get_channel_raw_value(enum input_channel ch)
 }
 
 float input_get_channel_value(enum input_channel ch) {
-    if (!is_channel_valid(ch) || !is_channel_configured(ch) || !is_channel_calibrated(ch)) {
-        APP_LOG_ERR("Invalid channel or channel not calibrated");
-        return 0;
+    if (!is_channel_valid(ch) || !is_channel_configured(ch) || !is_channel_calibrated(ch)
+        || !started) {
+            APP_LOG_ERR("Invalid channel, channel not calibrated or system not started");
+            return 0;
     }
     uint16_t data = channels[ch].raw_val;
     return input_convert(ch, (uint32_t)data);
@@ -163,6 +166,7 @@ bool input_start(void) {
     if (0 != input_ll.start()) {
         return false;
     }
+    started = true;
     return true;
 }
 
@@ -170,5 +174,6 @@ bool input_stop(void) {
     if (0 != input_ll.stop()) {
         return false;
     }
+    started = false;
     return true;
 }
