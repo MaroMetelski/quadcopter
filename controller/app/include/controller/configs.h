@@ -3,6 +3,7 @@
 
 #include <controller/motors.h>
 #include <controller/input.h>
+#include <controller/controller.h>
 
 enum pid_config_key {
     CONFIG_PID_PITCH,
@@ -33,8 +34,15 @@ struct pid_config {
     float Kd;
 };
 
-bool configs_get_pid(enum pid_config_key key, struct pid_config *dst);
-bool configs_set_pid(enum pid_config_key key, struct pid_config *src);
+struct controller_config {
+    enum controller_mode mode;
+};
+
+bool configs_get_pid_rate(enum pid_config_key key, struct pid_config *dst);
+bool configs_set_pid_rate(enum pid_config_key key, struct pid_config *src);
+
+bool configs_get_pid_angle(enum pid_config_key key, struct pid_config *dst);
+bool configs_set_pid_angle(enum pid_config_key key, struct pid_config *src);
 
 bool configs_get_motor(enum motor_config_key key, struct motor_config *dst);
 bool configs_set_motor(enum motor_config_key key, struct motor_config *src);
@@ -48,6 +56,9 @@ bool configs_get_input_calib(
     enum input_config_key key, struct input_channel_pwm_calib *dst);
 bool configs_set_input_calib(
     enum input_config_key key, struct input_channel_pwm_calib *src);
+
+bool configs_get_controller(struct controller_config *dst);
+bool configs_set_controller(struct controller_config *src);
 
 bool configs_save_all(void);
 bool configs_load_all(void);

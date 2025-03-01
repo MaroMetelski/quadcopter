@@ -6,15 +6,9 @@ static const struct mixer mixer_quad_x_default[MOTOR_LAST] = {
         .throttle = 1.0,
         .pitch = -1.0,
         .roll = 1.0,
-        .yaw = 1.0,
-    },
-    [MOTOR_FRONT_RIGHT] = {
-        .throttle = 1.0,
-        .pitch = 1.0,
-        .roll = 1.0,
         .yaw = -1.0,
     },
-    [MOTOR_BACK_LEFT] = {
+    [MOTOR_FRONT_RIGHT] = {
         .throttle = 1.0,
         .pitch = -1.0,
         .roll = -1.0,

@@ -62,18 +62,36 @@ static enum axis config_key_to_pid_axis(enum pid_config_key key)
     return -1;
 }
 
-bool config_dispatcher_update_pid(void)
+bool config_dispatcher_update_pid_rate(void)
 {
-
     for (int i = 0; i < CONFIG_PID_LAST; i++) {
         struct pid_config cfg;
 
-        if (!configs_get_pid(i, &cfg)) {
+        if (!configs_get_pid_rate(i, &cfg)) {
             return false;
         }
-        pid_inst_tune(config_key_to_pid_axis(i), cfg.Kd, cfg.Ki, cfg.Kp);
-
+        pid_inst_tune(PID_RATE, config_key_to_pid_axis(i), cfg.Kd, cfg.Ki, cfg.Kp);
     }
+    return true;
+}
+
+bool config_dispatcher_update_pid_angle(void)
+{
+    for (int i = 0; i < CONFIG_PID_LAST; i++)
+    {
+        struct pid_config cfg;
+
+        if (!configs_get_pid_angle(i, &cfg)) {
+            return false;
+        }
+        pid_inst_tune(PID_ANGLE, config_key_to_pid_axis(i), cfg.Kd, cfg.Ki, cfg.Kp);
+    }
+    return true;
+}
+
+bool config_dispatcher_update_controller_mode(void)
+{
+    // TODO: Add controller module and API to choose rate / angle mode.
     return true;
 }
 
@@ -130,5 +148,6 @@ bool config_dispatcher_update_all(void)
 {
     return (config_dispatcher_update_motors()
         && config_dispatcher_update_input()
-        && config_dispatcher_update_pid());
+        && config_dispatcher_update_pid_rate()
+        && config_dispatcher_update_pid_angle());
 }

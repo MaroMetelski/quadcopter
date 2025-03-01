@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <zephyr/shell/shell.h>
 #include <controller/configs.h>
@@ -7,20 +8,20 @@ static int cmd_config_set_pid(const struct shell *sh, size_t argc, char **argv)
 {
     enum pid_config_key key;
 
-    if (0 == strcmp(argv[1], "pitch")) {
+    if (0 == strcmp(argv[2], "pitch")) {
         key = CONFIG_PID_PITCH;
-    } else if (0 == strcmp(argv[1], "roll")) {
+    } else if (0 == strcmp(argv[2], "roll")) {
         key = CONFIG_PID_ROLL;
-    } else if (0 == strcmp(argv[1], "yaw")) {
+    } else if (0 == strcmp(argv[2], "yaw")) {
         key = CONFIG_PID_YAW;
     } else {
         shell_error(sh, "Invalid PID instance! %s", argv[1]);
         return -1;
     }
 
-    float Kp = atof(argv[2]);
-    float Ki = atof(argv[3]);
-    float Kd = atof(argv[4]);
+    float Kp = atof(argv[3]);
+    float Ki = atof(argv[4]);
+    float Kd = atof(argv[5]);
 
     struct pid_config cfg = {
         .Kd = Kd,
@@ -28,11 +29,20 @@ static int cmd_config_set_pid(const struct shell *sh, size_t argc, char **argv)
         .Kp = Kp,
     };
 
-    if (!configs_set_pid(key, &cfg)) {
-        shell_error(sh, "Failed to set PID config!");
+    if (0 == strcmp(argv[1], "rate")) {
+        if (!configs_set_pid_rate(key, &cfg)) {
+            shell_error(sh, "Failed to set PID rate config!");
+        return -1;
+        }
+    } else if (0 == strcmp(argv[1], "angle")) {
+        if (!configs_set_pid_angle(key, &cfg)) {
+            shell_error(sh, "Failed to set PID angle config!");
+        return -1;
+        }
+    } else {
+        shell_error(sh, "Invalid PID instance! Should be 'rate' or 'angle'");
         return -1;
     }
-
     return 0;
 }
 
@@ -40,11 +50,11 @@ static int cmd_config_get_pid(const struct shell *sh, size_t argc, char **argv)
 {
     enum pid_config_key key;
 
-    if (0 == strcmp(argv[1], "pitch")) {
+    if (0 == strcmp(argv[2], "pitch")) {
         key = CONFIG_PID_PITCH;
-    } else if (0 == strcmp(argv[1], "roll")) {
+    } else if (0 == strcmp(argv[2], "roll")) {
         key = CONFIG_PID_ROLL;
-    } else if (0 == strcmp(argv[1], "yaw")) {
+    } else if (0 == strcmp(argv[2], "yaw")) {
         key = CONFIG_PID_YAW;
     } else {
         shell_error(sh, "Invalid PID instance! %s", argv[1]);
@@ -53,12 +63,22 @@ static int cmd_config_get_pid(const struct shell *sh, size_t argc, char **argv)
 
     struct pid_config cfg;
 
-    if (!configs_get_pid(key, &cfg)) {
-        shell_error(sh, "Failed to read PID config!");
+    if (0 == strcmp(argv[1], "rate")) {
+        if (!configs_get_pid_rate(key, &cfg)) {
+            shell_error(sh, "Failed to read PID config!");
+            return -1;
+        }
+        shell_print(sh, "PID rate %s: Kp=%.3f, Kd=%.3f, Ki=%.3f", argv[2], cfg.Kp, cfg.Kd, cfg.Ki);
+    } else if (0 == strcmp(argv[1], "angle")) {
+        if (!configs_get_pid_angle(key, &cfg)) {
+            shell_error(sh, "Failed to read PID config!");
+            return -1;
+        }
+        shell_print(sh, "PID angle %s: Kp=%.3f, Kd=%.3f, Ki=%.3f", argv[2], cfg.Kp, cfg.Kd, cfg.Ki);
+    } else {
+        shell_error(sh, "Invalid PID instance! Should be 'rate' or 'angle'");
         return -1;
     }
-
-    shell_print(sh, "PID %s: Kp=%.3f, Kd=%.3f, Ki=%.3f", argv[1], cfg.Kp, cfg.Kd, cfg.Ki);
 
     return 0;
 }
@@ -266,9 +286,18 @@ static int cmd_config_motor_get(const struct shell *sh, size_t argc, char **argv
     return 0;
 }
 
+static int cmd_controller_set(const struct shell *sh, size_t argc, char **argv)
+{
+    struct controller_config cfg = {
+        .mode = atoi(argv[1]),
+    };
+    configs_set_controller(&cfg);
+    return 0;
+}
+
 SHELL_STATIC_SUBCMD_SET_CREATE(config_pid_sub_cmds,
-    SHELL_CMD_ARG(set, NULL, "set <inst> <Kp> <Ki> <Kd>", cmd_config_set_pid, 5, 0),
-    SHELL_CMD_ARG(get, NULL, "get <inst>", cmd_config_get_pid, 2, 0),
+    SHELL_CMD_ARG(set, NULL, "set <angle | rate> <inst> <Kp> <Ki> <Kd>", cmd_config_set_pid, 6, 0),
+    SHELL_CMD_ARG(get, NULL, "get <angle | rate> <inst>", cmd_config_get_pid, 3, 0),
     SHELL_SUBCMD_SET_END
 );
 
@@ -295,6 +324,7 @@ SHELL_STATIC_SUBCMD_SET_CREATE(config_sub_cmds,
     SHELL_CMD(input_config, &config_input_sub_cmds, "input_config <get|set>", NULL),
     SHELL_CMD(motor, &config_motor_sub_cmds, "motor <get|set>", NULL),
     SHELL_CMD(pid, &config_pid_sub_cmds, "pid <get|set>", NULL),
+    SHELL_CMD_ARG(controller, NULL, "controller <0|1>", cmd_controller_set, 2, 0),
     SHELL_CMD(apply_all, NULL, "Apply all configurations", cmd_config_apply_all),
     SHELL_CMD(save_all, NULL, "Save configurations to memory", cmd_config_save_all),
     SHELL_CMD(load_all, NULL, "Load configurations from memory", cmd_config_load_all),
