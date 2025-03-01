@@ -31,14 +31,9 @@ void attitude_quaternion_to_euler(float q[4], float ang[3]) {
     ang[2] = atan2f(tmp_1, tmp_2);
 };
 
-void attitude_euler_from_acc(float angles[3], float acc[3]) {
+void attitude_euler_from_acc(float angles[2], float acc[3]) {
     angles[0] = atan2(-1 * acc[0], sqrt(acc[1] * acc[1] + acc[2] * acc[2]));
     angles[1] = atan2(acc[1], acc[2]);
-    angles[2] = 0;
-}
-
-void attitude_propagate_euler(float angles[3], float ang_v[3], float dt) {
-    calc_integrate(angles, ang_v, 3, dt);
 }
 
 void attitude_propagate_quaternion(float q_att[4], float ang_v[3], float dt) {

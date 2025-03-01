@@ -1,3 +1,4 @@
+#include "app/unit.h"
 #include <zephyr/sys/__assert.h>
 #include <zephyr/device.h>
 #include <zephyr/drivers/sensor.h>
@@ -16,6 +17,7 @@ static void sensor_values_to_imu_data(struct sensor_value *accel_data,
     for (int i = 0; i < 3; i++) {
         imu_data->accel[i] = (float)sensor_value_to_double(&accel_data[i]);
         imu_data->ang_v[i] = (float)sensor_value_to_double(&gyro_data[i]);
+        imu_data->ang_v[i] = RAD_TO_DEG_F(imu_data->ang_v[i]);
     }
 }
 
