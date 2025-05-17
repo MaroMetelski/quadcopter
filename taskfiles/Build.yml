@@ -14,20 +14,8 @@ tasks:
     cmds:
       - west build -p -b {{.BOARD}} -s {{.SRC_DIR}}
 
-  nucleo_f303re:
-    cmds:
-      - task: build
-        vars:
-          BOARD: nucleo_f303re
-
   controller:
     cmds:
       - task: build
         vars:
           BOARD: controller
-
-  native:
-    cmds:
-      - task: build
-        vars:
-          BOARD: native_posix
