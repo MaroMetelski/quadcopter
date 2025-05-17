@@ -2,3 +2,5 @@
 /zephyr*
 /build*
 /modules*
+.cache*
+__pycache__*
