@@ -1,4 +1,4 @@
-#include "app/unit.h"
+#include <controller/unit.h>
 #include <zephyr/sys/__assert.h>
 #include <zephyr/device.h>
 #include <zephyr/drivers/sensor.h>

@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include <app/logging.h>
+#include <controller/logging.h>
 #include <controller/input.h>
 #include <controller/low_level/input_ll.h>
 #include <controller/low_level/input_sbus.h>

@@ -1,5 +1,5 @@
 #include <controller/motors.h>
-#include <app/logging.h>
+#include <controller/logging.h>
 #include <string.h>
 #include <controller/low_level/motors_pwm.h>
 

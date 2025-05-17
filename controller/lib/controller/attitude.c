@@ -1,7 +1,7 @@
 #include <math.h> /** TODO: Consider using cmsis fastmath */
 #include <controller/attitude.h>
 #include <controller/quaternion.h>
-#include <app/calc.h>
+#include <controller/calc.h>
 
 /** See: https://folk.ntnu.no/skoge/prost/proceedings/ecc-2013/data/papers/0927.pdf
   * Access 24.04.2023

@@ -3,15 +3,15 @@
 #include "zephyr/sys/printk.h"
 #include <controller/configs.h>
 #include <controller/config_dispatcher.h>
-#include <app/logging.h>
+#include <controller/logging.h>
 #include <controller/imu.h>
 #include <controller/filter.h>
 #include <controller/attitude.h>
-#include <app/unit.h>
+#include <controller/unit.h>
 #include <controller/mixer.h>
 #include <controller/pid_inst.h>
 #include <controller/motors.h>
-#include <app/calc.h>
+#include <controller/calc.h>
 
 #include <zephyr/kernel.h>
 
