@@ -13,8 +13,5 @@ target_sources_ifdef(CONFIG_APP_MOTORS_PWM_ZEPHYR app PRIVATE
 target_sources_ifdef(CONFIG_APP_INPUT app PRIVATE
     input_shell.c)
 
-target_sources_ifdef(CONFIG_APP_INPUT_PWM_ZEPHYR app PRIVATE
-    input_pwm_zephyr.c)
-
 target_sources_ifdef(CONFIG_APP_INPUT_SBUS_ZEPHYR app PRIVATE
     input_sbus_zephyr.c)

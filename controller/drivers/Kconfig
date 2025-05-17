@@ -1,12 +1,5 @@
 menu "Drivers"
 
-config PWM_INPUTS_DRV
-    bool "Zephyr PWM inputs driver"
-    default y
-    depends on PWM && DT_HAS_PWM_INPUTS_ENABLED
-    help
-      Enable PWM inputs driver for pwm-inputs compatible.
-
 config PWM_MOTORS_DRV
     bool "Zephyr PWM motors driver"
     default y

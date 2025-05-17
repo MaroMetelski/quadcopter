@@ -41,22 +41,6 @@ menuconfig APP_INPUT
 
 if APP_INPUT
 
-config APP_INPUT_PWM_ZEPHYR
-    bool "Zephyr based PWM inputs implementation"
-    default y
-    depends on PWM_INPUTS_DRV
-    select APP_INPUT_PWM_HAS_DRIVER
-    help
-        Use Zephyr drivers for controlling PWM inputs.
-
-config APP_INPUT_PWM
-    bool "Inputs PWM low level API"
-    default y
-    select APP_INPUT_PWM_ZEPHYR
-
-config APP_INPUT_PWM_HAS_DRIVER
-    bool
-
 config APP_INPUT_SBUS_ZEPHYR
     bool "Zephyr based implementation of SBus UART"
     default n

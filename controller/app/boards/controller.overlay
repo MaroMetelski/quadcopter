@@ -5,33 +5,9 @@
     };
 
     aliases {
-        pwm-inputs = &pwm_inputs;
         pwm-motors = &pwm_motors;
         imu = &lsm6dso;
         sbus = &sbus_uart;
-    };
-
-    pwm_inputs: pwm-inputs {
-        compatible = "pwm-inputs";
-        channel0: channel0 {
-            pwms = < &pwm0 1 0 0 >;
-        };
-        channel1: channel1 {
-            pwms = < &pwm0 2 0 0 >;
-        };
-        channel2: channel2 {
-            pwms = < &pwm1 1 0 0 >;
-        };
-        channel3: channel3 {
-            pwms = < &pwm1 2 0 0 >;
-        };
-        channel4: channel4 {
-            pwms = < &pwm2 1 0 0 >;
-        };
-        channel5: channel5 {
-            pwms = < &pwm2 2 0 0 >;
-        };
-
     };
 
     pwm_motors: pwm-motors {
