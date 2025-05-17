@@ -3,7 +3,6 @@ zephyr_library()
 zephyr_library_sources(
     configs_storage_zephyr.c
     pid_cmsis.c
-    quaternion_cmsis.c
     config_shell.c
 )
 
