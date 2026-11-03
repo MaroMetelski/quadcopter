@@ -17,9 +17,11 @@
 
 APP_LOG_MODULE_REGISTER(main, LOG_LEVEL_INF);
 
-struct {
+static struct {
     float throttle;
 } input;
+
+static bool armed = false;
 
 int main(void)
 {
@@ -47,6 +49,12 @@ int main(void)
 
     input_init();
     input_start();
+
+    struct input_channel_config cfg;
+    (void)input_get_config(CHANNEL_ARM, &cfg);
+
+        /* Value needs to be more than 60% of the signal. */
+    float arm_threshold = (cfg.max_val + cfg.min_val) / 1.5;
 
     while (1) {
         /* Read IMU data.*/
@@ -93,8 +101,19 @@ int main(void)
         input.throttle = input_get_channel_value(CHANNEL_THROTTLE);
         input_throttle = input.throttle;
 
+        /* TODO: Allow to create binary channels. For now just assume armed when value is more
+        than half. */
+        float arm_val = input_get_channel_value(CHANNEL_ARM);
+        if (arm_val > arm_threshold && !armed) {
+            LOG_WRN("Arming motors! input: %.2f", arm_val);
+            armed = true;
+        } else if (arm_val < arm_threshold && armed) {
+            LOG_INF("Disarming motors!");
+            armed = false;
+        }
+
         /* Failsafe. */
-        if (input_throttle < 100) {
+        if (!armed) {
             motor_set(MOTOR_FRONT_LEFT, 0);
             motor_set(MOTOR_FRONT_RIGHT, 0);
             motor_set(MOTOR_BACK_LEFT, 0);

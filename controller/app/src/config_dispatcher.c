@@ -108,6 +108,8 @@ static enum input_channel config_key_to_input_channel(enum input_config_key key)
         return CHANNEL_YAW;
     case CONFIG_INPUT_CHANNEL_THROTTLE_CONFIG:
         return CHANNEL_THROTTLE;
+    case CONFIG_INPUT_CHANNEL_ARM_CONFIG:
+        return CHANNEL_ARM;
     default:
         return -1;
     }

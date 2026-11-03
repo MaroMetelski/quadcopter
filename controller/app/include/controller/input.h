@@ -9,6 +9,7 @@ enum input_channel {
     CHANNEL_ROLL,
     CHANNEL_YAW,
     CHANNEL_THROTTLE,
+    CHANNEL_ARM,
     CHANNEL_FUNC_LAST
 };
 
@@ -38,6 +39,12 @@ uint32_t input_get_channel_raw_value(enum input_channel ch);
 */
 bool input_set_calibration(
     enum input_channel ch, struct input_channel_pwm_calib *calib);
+
+bool input_get_calibration(
+    enum input_channel ch, struct input_channel_pwm_calib *calib);
+
+bool input_get_config(
+    enum input_channel ch, struct input_channel_config *config);
 
 float input_get_channel_value(enum input_channel ch);
 

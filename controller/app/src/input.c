@@ -6,7 +6,7 @@
 #include <controller/low_level/input_ll.h>
 #include <controller/low_level/input_sbus.h>
 
-APP_LOG_MODULE_REGISTER(input, APP_LOG_LEVEL_DBG);
+APP_LOG_MODULE_REGISTER(input, APP_LOG_LEVEL_INF);
 
 bool started = false;
 
@@ -34,6 +34,7 @@ static const char *input_channel_names[] = {
     [CHANNEL_ROLL] = "roll",
     [CHANNEL_YAW] = "yaw",
     [CHANNEL_THROTTLE] = "throttle",
+    [CHANNEL_ARM] = "arm",
 };
 
 enum input_channel input_channel_from_string(char *str) {
@@ -82,6 +83,17 @@ bool input_configure_channel(enum input_channel ch, struct input_channel_config 
     }
     channels[ch].config = *cfg;
     channels[ch].configured = true;
+    return true;
+}
+
+bool input_get_config(
+    enum input_channel ch, struct input_channel_config *config)
+{
+    if (!is_channel_valid(ch) || !is_channel_configured(ch)) {
+        APP_LOG_ERR("Invalid channel or not configured");
+        return false;
+    }
+    *config = channels[ch].config;
     return true;
 }
 

@@ -123,6 +123,8 @@ static int cmd_config_set_input(const struct shell *sh, size_t argc, char **argv
         key = CONFIG_INPUT_CHANNEL_YAW_CONFIG;
     } else if (0 == strcmp(argv[1], "throttle")) {
         key = CONFIG_INPUT_CHANNEL_THROTTLE_CONFIG;
+    } else if (0 == strcmp(argv[1], "arm")) {
+        key = CONFIG_INPUT_CHANNEL_ARM_CONFIG;
     } else {
         shell_error(sh, "Invalid input channel! %s", argv[1]);
         return -1;
@@ -153,6 +155,8 @@ static int cmd_config_get_input(const struct shell *sh, size_t argc, char **argv
         key = CONFIG_INPUT_CHANNEL_YAW_CONFIG;
     } else if (0 == strcmp(argv[1], "throttle")) {
         key = CONFIG_INPUT_CHANNEL_THROTTLE_CONFIG;
+    } else if (0 == strcmp(argv[1], "arm")) {
+        key = CONFIG_INPUT_CHANNEL_ARM_CONFIG;
     } else {
         shell_error(sh, "Invalid input channel! %s", argv[1]);
         return -1;
@@ -183,6 +187,8 @@ static int cmd_config_get_input_calib(const struct shell *sh, size_t argc, char 
         key = CONFIG_INPUT_CHANNEL_YAW_CONFIG;
     } else if (0 == strcmp(argv[1], "throttle")) {
         key = CONFIG_INPUT_CHANNEL_THROTTLE_CONFIG;
+    } else if (0 == strcmp(argv[1], "arm")) {
+        key = CONFIG_INPUT_CHANNEL_ARM_CONFIG;
     } else {
         shell_error(sh, "Invalid input channel! %s", argv[1]);
         return -1;
@@ -212,6 +218,8 @@ static int cmd_config_set_input_calib(const struct shell *sh, size_t argc, char 
         key = CONFIG_INPUT_CHANNEL_YAW_CONFIG;
     } else if (0 == strcmp(argv[1], "throttle")) {
         key = CONFIG_INPUT_CHANNEL_THROTTLE_CONFIG;
+    } else if (0 == strcmp(argv[1], "arm")) {
+        key = CONFIG_INPUT_CHANNEL_ARM_CONFIG;
     } else {
         shell_error(sh, "Invalid input channel! %s", argv[1]);
         return -1;
@@ -328,6 +336,7 @@ SHELL_STATIC_SUBCMD_SET_CREATE(config_sub_cmds,
     SHELL_CMD(apply_all, NULL, "Apply all configurations", cmd_config_apply_all),
     SHELL_CMD(save_all, NULL, "Save configurations to memory", cmd_config_save_all),
     SHELL_CMD(load_all, NULL, "Load configurations from memory", cmd_config_load_all),
+    SHELL_CMD(dump, NULL, "Dump current configuration", cmd_dump),
     SHELL_SUBCMD_SET_END
 );
 
