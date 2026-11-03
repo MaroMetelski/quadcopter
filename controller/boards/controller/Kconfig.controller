@@ -5,4 +5,4 @@
 
 config BOARD_CONTROLLER
 	bool "Flight controller F3 V1"
-	depends on SOC_STM32F303XE
+	select SOC_STM32F303XE

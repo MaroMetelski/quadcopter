@@ -7,11 +7,14 @@ manifest:
 
   projects:
     - name: zephyr
-      revision: d55b0a410d98f10e84ac338888413ef240022ec1
+      revision: v4.4.0
       path: zephyr
       import:
         name-allowlist:
           - cmsis
+          - cmsis-dsp
+          - cmsis_6
           - hal_stm32
           - hal_st # for st device drivers, like lsm6dso
+          - net-tools # native sim tools
       west-commands: scripts/west-commands.yml

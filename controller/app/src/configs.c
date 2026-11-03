@@ -1,4 +1,3 @@
-#include "zephyr/toolchain/gcc.h"
 #include <controller/low_level/configs_storage.h>
 #include <controller/configs.h>
 

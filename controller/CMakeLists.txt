@@ -1,3 +1,3 @@
-add_subdirectory(drivers/input)
-add_subdirectory(drivers/motors)
+add_subdirectory_ifdef(CONFIG_PWM_INPUTS_DRV drivers/input)
+add_subdirectory_ifdef(CONFIG_PWM_MOTORS_DRV drivers/motors)
 zephyr_include_directories(include/)

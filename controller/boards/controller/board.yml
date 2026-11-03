@@ -1,0 +1,6 @@
+board:
+  name: controller
+  full_name: Controller
+  vendor: custom
+  socs:
+    - name: stm32f303xe
