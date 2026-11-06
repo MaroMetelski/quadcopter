@@ -18,3 +18,6 @@ target_sources_ifdef(CONFIG_APP_INPUT_PWM_ZEPHYR app PRIVATE
 
 target_sources_ifdef(CONFIG_APP_INPUT_SBUS_ZEPHYR app PRIVATE
     input_sbus_zephyr.c)
+
+target_sources_ifdef(CONFIG_LED app PRIVATE
+    led_zephyr.c)
