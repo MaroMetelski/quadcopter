@@ -9,6 +9,7 @@
         pwm-motors = &pwm_motors;
         imu = &lsm6dso;
         sbus = &sbus_uart;
+        leds = &leds;
     };
 
     pwm_inputs: pwm-inputs {
