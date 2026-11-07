@@ -9,6 +9,7 @@ target_sources(app PRIVATE
     pid_inst.c
     sbus_decoder.c
     indications.c
+    battery.c
 )
 
 target_sources_ifdef(CONFIG_APP_MOTORS app PRIVATE motors.c)
