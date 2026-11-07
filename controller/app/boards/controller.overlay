@@ -10,6 +10,7 @@
         imu = &lsm6dso;
         sbus = &sbus_uart;
         leds = &leds;
+        fuel-gauge = &bq27441;
     };
 
     pwm_inputs: pwm-inputs {

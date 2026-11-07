@@ -336,7 +336,6 @@ SHELL_STATIC_SUBCMD_SET_CREATE(config_sub_cmds,
     SHELL_CMD(apply_all, NULL, "Apply all configurations", cmd_config_apply_all),
     SHELL_CMD(save_all, NULL, "Save configurations to memory", cmd_config_save_all),
     SHELL_CMD(load_all, NULL, "Load configurations from memory", cmd_config_load_all),
-    SHELL_CMD(dump, NULL, "Dump current configuration", cmd_dump),
     SHELL_SUBCMD_SET_END
 );
 
