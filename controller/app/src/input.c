@@ -5,10 +5,11 @@
 #include <controller/input.h>
 #include <controller/low_level/input_ll.h>
 #include <controller/low_level/input_sbus.h>
+#include <cmsis_os2.h>
 
 APP_LOG_MODULE_REGISTER(input, APP_LOG_LEVEL_INF);
 
-bool started = false;
+static bool started = false;
 
 struct input_channel_data {
     struct input_channel_config config;
@@ -19,8 +20,11 @@ struct input_channel_data {
     uint16_t raw_val;
 };
 
+static input_callback app_cb;
+static float values[CHANNEL_FUNC_LAST];
+
 #ifdef CONFIG_APP_INPUT_SBUS_ZEPHYR
-struct input_ll_api input_ll  = {
+static struct input_ll_api input_ll  = {
     .set_frame_callback = input_sbus_set_frame_callback,
     .start = input_sbus_start,
     .stop = input_sbus_stop,
@@ -36,6 +40,8 @@ static const char *input_channel_names[] = {
     [CHANNEL_THROTTLE] = "throttle",
     [CHANNEL_ARM] = "arm",
 };
+
+static float input_convert(enum input_channel ch, uint32_t raw_dc);
 
 enum input_channel input_channel_from_string(char *str) {
     for (int i = 0; i < CHANNEL_FUNC_LAST; i++) {
@@ -73,6 +79,11 @@ static void input_ll_callback(uint16_t *data, uint8_t size) {
             continue;
         }
         channels[i].raw_val = data[internal_channel_num];
+        values[i] = input_convert(i, channels[i].raw_val);
+
+        if (app_cb) {
+            app_cb(values, sizeof(values));
+        }
     }
 }
 
@@ -167,9 +178,12 @@ float input_get_channel_value(enum input_channel ch) {
     return input_convert(ch, (uint32_t)data);
 }
 
-bool input_init(void) {
+bool input_init(input_callback cb) {
     if (0 != input_ll.set_frame_callback(input_ll_callback)) {
         return false;
+    }
+    if (cb) {
+        app_cb = cb;
     }
     return true;
 }

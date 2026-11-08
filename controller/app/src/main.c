@@ -15,6 +15,8 @@
 
 #include <zephyr/kernel.h>
 
+#include <cmsis_os2.h>
+
 APP_LOG_MODULE_REGISTER(main, LOG_LEVEL_INF);
 
 static struct {
@@ -22,6 +24,22 @@ static struct {
 } input;
 
 static bool armed = false;
+
+osSemaphoreId_t data_filled_sem;
+osSemaphoreId_t data_empty_sem;
+
+/* RX input channels. */
+float rx_data[CHANNEL_FUNC_LAST];
+
+void input_cb(float *data, int size)
+{
+    if (osOK == osSemaphoreAcquire(data_empty_sem, 0)) {
+        memcpy(rx_data, data, size);
+        osSemaphoreRelease(data_filled_sem);
+    } else {
+        return;
+    }
+}
 
 int main(void)
 {
@@ -47,11 +65,23 @@ int main(void)
     float input_throttle = 0;
     mixer_configure_default();
 
-    input_init();
+    data_empty_sem = osSemaphoreNew(1, 1, NULL);
+    data_filled_sem = osSemaphoreNew(1, 0, NULL);
+    if (!data_empty_sem || !data_filled_sem) {
+        LOG_ERR("Failed to create data semaphores");
+    }
+
+    input_init(input_cb);
     input_start();
 
     struct input_channel_config cfg;
     (void)input_get_config(CHANNEL_ARM, &cfg);
+
+    float req_pitch = 0.0;
+    float req_roll = 0.0;
+    float req_yaw = 0.0;
+    float req_throttle = 0.0;
+    float arm_val = 0.0;
 
         /* Value needs to be more than 60% of the signal. */
     float arm_threshold = (cfg.max_val + cfg.min_val) / 1.5;
@@ -67,10 +97,25 @@ int main(void)
             angles[i] = RAD_TO_DEG_F(angles[i]);
         }
 
-        /* Read inputs. */
-        float req_pitch = input_get_channel_value(CHANNEL_PITCH);
-        float req_roll = input_get_channel_value(CHANNEL_ROLL);
-        float req_yaw = input_get_channel_value(CHANNEL_YAW);
+        if (osOK == osSemaphoreAcquire(data_filled_sem, 0)) {
+            req_pitch = rx_data[CHANNEL_PITCH];
+            req_roll = rx_data[CHANNEL_ROLL];
+            req_yaw = rx_data[CHANNEL_YAW];
+            req_throttle = rx_data[CHANNEL_THROTTLE];
+            arm_val = rx_data[CHANNEL_ARM];
+            osSemaphoreRelease(data_empty_sem);
+        }
+
+        input_throttle = req_throttle;
+        /* TODO: Allow to create binary channels. For now just assume armed when value is more
+        than half. */
+        if (arm_val > arm_threshold && !armed) {
+            LOG_WRN("Arming motors! input: %.2f", arm_val);
+            armed = true;
+        } else if (arm_val < arm_threshold && armed) {
+            LOG_INF("Disarming motors!");
+            armed = false;
+        }
 
         /* Reduce sensitivity in the middle position. */
         req_pitch = IS_BETWEEN(req_pitch, -1, 1) ? 0 : req_pitch;
@@ -96,21 +141,6 @@ int main(void)
         float pitch_pid = pid_inst_process(PID_RATE, AXIS_PITCH, pitch_rate_error);
         float roll_pid = pid_inst_process(PID_RATE, AXIS_ROLL, roll_rate_error);
         float yaw_pid = pid_inst_process(PID_RATE, AXIS_YAW, yaw_rate_error);
-
-        /* Get input. */
-        input.throttle = input_get_channel_value(CHANNEL_THROTTLE);
-        input_throttle = input.throttle;
-
-        /* TODO: Allow to create binary channels. For now just assume armed when value is more
-        than half. */
-        float arm_val = input_get_channel_value(CHANNEL_ARM);
-        if (arm_val > arm_threshold && !armed) {
-            LOG_WRN("Arming motors! input: %.2f", arm_val);
-            armed = true;
-        } else if (arm_val < arm_threshold && armed) {
-            LOG_INF("Disarming motors!");
-            armed = false;
-        }
 
         /* Failsafe. */
         if (!armed) {

@@ -24,6 +24,8 @@ struct input_channel_config {
     float max_val;
 };
 
+typedef void (*input_callback)(float *data, int size);
+
 enum input_channel input_channel_from_string(char *str);
 bool input_configure_channel(enum input_channel ch, struct input_channel_config *cfg);
 
@@ -49,7 +51,7 @@ bool input_get_config(
 float input_get_channel_value(enum input_channel ch);
 
 /** Initialize input system. */
-bool input_init(void);
+bool input_init(input_callback cb);
 /** Start receiving input data. */
 bool input_start(void);
 /** Stop receiving input data. */

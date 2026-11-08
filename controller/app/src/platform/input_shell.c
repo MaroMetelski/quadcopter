@@ -53,7 +53,7 @@ static int cmd_input_read(const struct shell *sh, size_t argc, char **argv)
 
 static int cmd_start(const struct shell *sh, size_t argc, char **argv)
 {
-    input_init();
+    input_init(NULL);
     input_start();
     return 0;
 }
